@@ -11,6 +11,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,10 +42,6 @@ import javax.validation.Valid;
             @NamedQuery(
                     name = "Produto.PorNome",
                     query = "SELECT p FROM Produto p WHERE p.nome LIKE :nome ORDER BY p.quantidade"
-            ),
-            @NamedQuery(
-                    name = Produto.ProdutoPorID,
-                    query = "SELECT p FROM Produto p WHERE p.id = ?1"
             )
         }
 )
@@ -62,13 +59,12 @@ import javax.validation.Valid;
         }
 )
 public class Produto extends Entidade implements Serializable {
-    public static final String ProdutoPorID = "ProdutoPorID";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUTO_ID")
     private Long id;
-    
+
     @NotNull
     @Size(max = 30)
     @Column(name = "PRODUTO_NOME")
@@ -87,8 +83,11 @@ public class Produto extends Entidade implements Serializable {
     @Column(name = "PRODUTO_PRECO")
     private double preco;
 
+    @Embedded
+    private ImagemProduto imgProduto;
+
     @Valid
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "PRODUTO_TIPOPRODUTOFK", referencedColumnName = "TIPOPRODUTO_ID", insertable = true, updatable = true)
     private TipoProduto tipoProduto;
 
@@ -109,6 +108,14 @@ public class Produto extends Entidade implements Serializable {
             = {
                 @JoinColumn(name = "CORPRODUTO_ID")})
     private List<CorProduto> cor;
+
+    public ImagemProduto getImgProduto() {
+        return imgProduto;
+    }
+
+    public void setImgProduto(ImagemProduto imgProduto) {
+        this.imgProduto = imgProduto;
+    }
 
     public boolean possui(String nome) {
         return nome.contains(nome);

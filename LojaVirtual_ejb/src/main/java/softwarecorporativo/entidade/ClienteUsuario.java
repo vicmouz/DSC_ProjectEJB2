@@ -6,12 +6,14 @@
 package softwarecorporativo.entidade;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,8 +23,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 /**
@@ -62,12 +67,14 @@ import javax.validation.constraints.Size;
 public class ClienteUsuario extends UsuarioGeral implements Serializable {
 public static final String Clienteporcpf = "Clienteporcpf";
 
+@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = true)
+@JoinColumn(name = "ID_CARTAO_CREDITO", referencedColumnName = "ID_CARTAO_CREDITO")
+private CartaoCredito cartaoCredito;
 
-
-@NotNull(message = "DataNascimento não pode ser null/vazio")
-@Size(max = 20)
-@Column(name="CLIENTE_DATANASCIMENTO")
-private String dataNascimento;
+@Column(name="CLIENTE_DATANASCIMENTO", nullable = false)
+@Past
+@Temporal(TemporalType.DATE)
+private Date dataNascimento;
 
 
 @NotNull (message = "Celular não pode ser null")
@@ -79,9 +86,7 @@ private String celular;
 @Column(name="CLIENTE_FIXO",length=20)
 private String fixo;
 
-@Valid
-@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL,optional=false)
-@JoinColumn(name="CLIENTE_ENDERECOFK",referencedColumnName = "ENDERECO_ID",insertable = false, updatable = false)
+@Embedded
 private EnderecoCliente endereco;
 
 @Valid
@@ -91,11 +96,11 @@ private List<Pedido> pedidoUsuario;
 
 
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -132,6 +137,15 @@ private List<Pedido> pedidoUsuario;
 
     public void setPedidoUsuario(List<Pedido> pedidoUsuario) {
         this.pedidoUsuario = pedidoUsuario;
+    }
+    
+    public CartaoCredito getCartaoCredito() {
+        return cartaoCredito;
+    }
+    
+    public void setCartaoCredito(CartaoCredito cartaoCredito) {
+        this.cartaoCredito = cartaoCredito;
+        this.cartaoCredito.setUsuario(this);
     }
 
 }

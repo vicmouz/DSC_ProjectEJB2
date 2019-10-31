@@ -5,6 +5,7 @@
  */
 package softwarecorporativo.ejb.test;
 
+import java.util.Calendar;
 import javax.ejb.EJBException;
 import javax.naming.NamingException;
 import javax.validation.ConstraintViolation;
@@ -73,7 +74,6 @@ public class ClienteTest extends Teste{
         cliente.setCpf("212.762.055-03");
         cliente.setEmail("jose@gmail.com");
         cliente.setNome("Natanael");
-        cliente.setId(9l);
         cliente.setFixo("33391803");
          EnderecoCliente ec = new EnderecoCliente();
         ec.setNome("Avenida Paulista");
@@ -85,7 +85,11 @@ public class ClienteTest extends Teste{
         ec.setEstado("São Paulo");
         ec.setPais("BR");
         cliente.setEndereco(ec);
-        cliente.setDataNascimento("24/02/1998");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, 1998);
+        c.set(Calendar.MONTH, Calendar.AUGUST);
+        c.set(Calendar.DAY_OF_MONTH, 24);
+        cliente.setDataNascimento(c.getTime());
         cliente.setCelular("333333333");
         
         clienteservico.persistirCliente(cliente);

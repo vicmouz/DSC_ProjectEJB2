@@ -17,9 +17,8 @@ import org.junit.runners.Suite;
  * @author marcos
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({AdministradorTest.class, ClienteTest.class, CorProdutoTest.class,
-EnderecoTest.class, ImagemProdutoTest.class, PedidoTest.class, ProdutoTest.class,
-TamanhoProdutoTest.class, TipoProdutoTest.class})
+@Suite.SuiteClasses({AdministradorTest.class, ClienteTest.class, CartaoCreditoTest.class ,CorProdutoTest.class, PedidoTest.class,
+    TamanhoProdutoTest.class, TipoProdutoTest.class})
 public class TestSuite {
 
     @BeforeClass
@@ -37,5 +36,5 @@ public class TestSuite {
     @After
     public void tearDown() throws Exception {
     }
-    
+
 }

@@ -6,21 +6,16 @@
 package softwarecorporativo.entidade;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -61,11 +56,7 @@ private String nome;
 @Column(name = "CORPRODUTO_TIPO")
 private String tipo;
 
-@Valid
-@OneToMany(mappedBy = "corImagem",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-private List<ImagemProduto> imagem;
-
-    public String getTipo() {
+public String getTipo() {
         return tipo;
     }
 
@@ -90,15 +81,4 @@ private List<ImagemProduto> imagem;
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-   
-
-    public List<ImagemProduto> getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(List<ImagemProduto> imagem) {
-        this.imagem = imagem;
-    }
-
 }

@@ -11,6 +11,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.GeneratedValue;
@@ -30,50 +31,8 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author marcosbrasileiro
  */
-@Entity
-@Table(name="TB_ENDERECOCLIENTE")
-@Access(AccessType.FIELD)
-@NamedQueries(
-        {
-            @NamedQuery(
-                    name = "EnderecoCliente.PorCep",
-                    query = "SELECT e FROM EnderecoCliente e WHERE e.cep LIKE :cep ORDER BY e.id"
-            ),
-            @NamedQuery(
-                    name = "EnderecoCliente.PorCidade",
-                    query = "SELECT e FROM EnderecoCliente e WHERE e.cidade LIKE :cidade ORDER BY e.id"
-            ),
-            @NamedQuery(
-                    name = "EnderecoCliente.PorNome",
-                    query = "SELECT e FROM EnderecoCliente e WHERE e.nome LIKE :nome ORDER BY e.id"
-            ),@NamedQuery(
-                    name = EnderecoCliente.EnderecoPorCep,
-                    query = "SELECT e FROM EnderecoCliente e WHERE e.cep = ?1"
-            )
-                        }
-)
-@NamedNativeQueries(
-        {
-            @NamedNativeQuery(
-                    name = "EnderecoCliente.PorNumeroSQL",
-                    query = "SELECT ENDERECO_ID, ENDERECO_NOME, ENDERECO_NUMERO,ENDERECO_COMPLEMENTO,ENDERECO_BAIRRO,ENDERECO_CIDADE,ENDERECO_CEP,ENDERECO_ESTADO,ENDERECO_PAIS  FROM TB_ENDERECOCLIENTE WHERE ENDERECO_NUMERO LIKE ? ORDER BY ENDERECO_ID",
-                    resultClass = EnderecoCliente.class
-            )
-        }
-)
-@SqlResultSetMapping(
-        name = "EnderecoCliente.Quantidade",
-        entities = {
-            @EntityResult(entityClass = EnderecoCliente.class)},
-        columns = {
-            @ColumnResult(name = "TOTAL_ITENS", type = Long.class)}
-)
+@Embeddable
 public class EnderecoCliente extends Entidade implements Serializable{
-    public static final String EnderecoPorCep = "EnderecoPorCep";
- @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
- @Column(name="ENDERECO_ID")
- private Long id;
  
  @NotNull
  @Size(max=100)
